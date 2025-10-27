@@ -1,0 +1,24 @@
+{
+  "schema_version": "v1",
+  "name": "summarizeAlert",
+  "description": "Summarizes Azure Monitor alerts using a Foundry model via Azure Function",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "rest",
+    "url": "https://<your-function-app>.azurewebsites.net/api/summarize",
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "request": {
+      "body": {
+        "description": "{{alertDescription}}"
+      }
+    },
+    "response": {
+      "type": "text"
+    }
+  }
+}
