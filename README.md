@@ -82,9 +82,6 @@ Feel free to fork, extend, or adapt this solution for your own hybrid agent scen
 
 MIT License
 
-
 
-Would you like me to generate the actual contents of the plugin manifest files or the Azure Function code next? I can also simulate the alerts.jsonl training file or help you build the agent-config.md for Copilot Studio.
 
----
 
