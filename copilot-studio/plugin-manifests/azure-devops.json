@@ -1,0 +1,33 @@
+{
+  "schema_version": "v1",
+  "name": "triggerDevOpsPipeline",
+  "description": "Triggers a deployment pipeline in Azure DevOps",
+  "auth": {
+    "type": "api_key",
+    "name": "Authorization",
+    "location": "header",
+    "value": "Basic {{ENCODED_PAT}}"
+  },
+  "api": {
+    "type": "rest",
+    "url": "https://dev.azure.com/{{ORG_NAME}}/{{PROJECT_NAME}}/_apis/pipelines/{{PIPELINE_ID}}/runs?api-version=7.0",
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "request": {
+      "body": {
+        "resources": {
+          "repositories": {
+            "self": {
+              "refName": "refs/heads/main"
+            }
+          }
+        }
+      }
+    },
+    "response": {
+      "type": "json"
+    }
+  }
+}
