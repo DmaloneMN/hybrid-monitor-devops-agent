@@ -1,0 +1,23 @@
+{
+  "schema_version": "v1",
+  "name": "getAzureAlerts",
+  "description": "Fetches active alerts from Azure Monitor",
+  "auth": {
+    "type": "oauth2",
+    "client_id": "{{AZURE_CLIENT_ID}}",
+    "client_secret": "{{AZURE_CLIENT_SECRET}}",
+    "token_url": "https://login.microsoftonline.com/{{TENANT_ID}}/oauth2/v2.0/token",
+    "scope": "https://management.azure.com/.default"
+  },
+  "api": {
+    "type": "rest",
+    "url": "https://management.azure.com/subscriptions/{{SUBSCRIPTION_ID}}/providers/Microsoft.AlertsManagement/alerts?api-version=2019-05-05",
+    "method": "GET",
+    "headers": {
+      "Authorization": "Bearer {{access_token}}"
+    },
+    "response": {
+      "type": "json"
+    }
+  }
+}
