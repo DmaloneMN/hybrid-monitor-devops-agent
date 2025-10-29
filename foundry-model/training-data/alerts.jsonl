@@ -1,0 +1,2 @@
+{"prompt": "Summarize this alert: CPU usage exceeded 90% on VM 'web-01'", "completion": "High CPU usage detected on web-01. Immediate action recommended."}
+{"prompt": "Summarize this alert: Disk space below 10% on database server", "completion": "Low disk space on database server. Consider cleanup or scaling."}
