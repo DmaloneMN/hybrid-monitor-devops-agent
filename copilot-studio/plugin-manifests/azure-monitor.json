@@ -5,6 +5,12 @@
     "version": "1.0.0",
     "description": "Fetch active alerts from Azure Monitor"
   },
+  "servers": [
+    {
+      "url": "https://management.azure.com",
+      "description": "Azure Management API"
+    }
+  ],
   "paths": {
     "/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts": {
       "get": {
