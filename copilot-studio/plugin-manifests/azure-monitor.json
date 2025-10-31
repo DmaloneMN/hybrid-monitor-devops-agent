@@ -1,23 +1,47 @@
 {
-  "schema_version": "v1",
-  "name": "getAzureAlerts",
-  "description": "Fetches active alerts from Azure Monitor",
-  "auth": {
-    "type": "oauth2",
-    "client_id": "{{AZURE_CLIENT_ID}}",
-    "client_secret": "{{AZURE_CLIENT_SECRET}}",
-    "token_url": "https://login.microsoftonline.com/{{TENANT_ID}}/oauth2/v2.0/token",
-    "scope": "https://management.azure.com/.default"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Azure Monitor Alerts API",
+    "version": "1.0.0",
+    "description": "Fetch active alerts from Azure Monitor"
   },
-  "api": {
-    "type": "rest",
-    "url": "https://management.azure.com/subscriptions/{{SUBSCRIPTION_ID}}/providers/Microsoft.AlertsManagement/alerts?api-version=2019-05-05",
-    "method": "GET",
-    "headers": {
-      "Authorization": "Bearer {{access_token}}"
-    },
-    "response": {
-      "type": "json"
+  "paths": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts": {
+      "get": {
+        "summary": "Get active alerts",
+        "operationId": "getActiveAlerts",
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2021-05-01"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
