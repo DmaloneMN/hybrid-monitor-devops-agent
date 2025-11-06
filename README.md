@@ -14,7 +14,16 @@ This solution implements a hybrid agent that monitors Azure alerts, summarizes i
   4. Log actions to Fabric or tag resources via Purview (optional)
 
 ---
+## Authentication Setup
 
+This agent uses a token fetcher plugin to retrieve Azure AD tokens via client_credentials flow. Ensure your App Registration has:
+- Azure Service Management API permissions
+- Admin consent granted
+- A valid client secret
+
+
+---
+Tokens are injected manually into API calls using the `Authorization` header.
 ## 🧱 Architecture Overview
 User → Copilot Studio Agent → Azure Monitor Plugin (GET alert) → Azure Function Plugin (POST to Foundry model) → Azure DevOps Plugin (POST to trigger deployment) → Optional: Fabric Logging / Purview Tagging
 
