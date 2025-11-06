@@ -1,0 +1,40 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Azure Token Fetcher",
+    "version": "1.0.0"
+  },
+  "host": "login.microsoftonline.com",
+  "basePath": "/{tenantId}/oauth2/v2.0",
+  "schemes": ["https"],
+  "paths": {
+    "/token": {
+      "post": {
+        "summary": "Fetch Azure AD token",
+        "operationId": "fetchAzureToken",
+        "consumes": ["application/x-www-form-urlencoded"],
+        "produces": ["application/json"],
+        "parameters": [
+          { "name": "tenantId", "in": "path", "required": true, "type": "string" },
+          { "name": "client_id", "in": "formData", "required": true, "type": "string" },
+          { "name": "client_secret", "in": "formData", "required": true, "type": "string" },
+          { "name": "scope", "in": "formData", "required": true, "type": "string", "default": "https://management.azure.com/.default" },
+          { "name": "grant_type", "in": "formData", "required": true, "type": "string", "default": "client_credentials" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Access token response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": { "type": "string" },
+                "token_type": { "type": "string" },
+                "expires_in": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
