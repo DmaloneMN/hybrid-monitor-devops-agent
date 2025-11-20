@@ -54,7 +54,24 @@ The function will be available at `http://localhost:7071/api/Summarize-alert`
 
 ## Testing
 
-Test the function using curl:
+### Unit Tests
+
+Run the unit tests:
+
+```bash
+cd Summarize-alert
+python -m unittest test_function.py -v
+```
+
+With pytest (install dev dependencies first):
+```bash
+pip install -r requirements-dev.txt
+pytest test_function.py -v --cov=__init__
+```
+
+### Manual Testing
+
+Test the function using curl when running locally:
 
 ```bash
 curl -X POST http://localhost:7071/api/Summarize-alert \
@@ -67,6 +84,19 @@ Expected response:
 {
   "summary": "High CPU usage detected. Immediate action recommended."
 }
+```
+
+Test error handling:
+```bash
+# Missing alert field
+curl -X POST http://localhost:7071/api/Summarize-alert \
+  -H "Content-Type: application/json" \
+  -d '{}'
+
+# Invalid JSON
+curl -X POST http://localhost:7071/api/Summarize-alert \
+  -H "Content-Type: application/json" \
+  -d 'invalid json'
 ```
 
 ## Deployment
