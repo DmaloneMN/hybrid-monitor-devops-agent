@@ -7,33 +7,47 @@ on:
     paths:
       - 'azure-function/**'
       - '.github/workflows/deploy-function.yml'
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
+    # Set permissions for OIDC token if using Azure login with OIDC
+    permissions:
+      contents: read
+      id-token: write
 
     env:
-      AZURE_FUNCTIONAPP_NAME: your-function-app-name
-      AZURE_FUNCTIONAPP_PACKAGE_PATH: ./azure-function/summarize-alert
+      AZURE_FUNCTIONAPP_NAME: your-function-app-name  # TODO: Replace with your function app name
+      AZURE_FUNCTIONAPP_PACKAGE_PATH: ./azure-function
       PYTHON_VERSION: '3.11'
 
     steps:
       - name: 📥 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🧰 Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Summarize-alert/requirements.txt'
 
-      - name: 📦 Install Azure Functions Core Tools
+      - name: 📦 Install dependencies
         run: |
-          npm install -g azure-functions-core-tools@4 --unsafe-perm true
+          cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Summarize-alert
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
 
       - name: 🔐 Azure Login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          # For OIDC authentication (recommended), use:
+          # client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          # tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          # subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: 🚀 Deploy to Azure Function App
         uses: Azure/functions-action@v1
@@ -41,3 +55,5 @@ jobs:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          # Uncomment if using Azure login instead of publish profile:
+          # respect-funcignore: true
